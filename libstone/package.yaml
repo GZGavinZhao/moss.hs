@@ -1,0 +1,41 @@
+name: libstone
+version: 0.1.0.0
+maintainer: Gavin Zhao <me@gzgz.dev>
+license: MPL-2.0
+homepage: https://github.com/GZGavinZhao/moss.hs
+category: Codec
+
+language: GHC2021
+
+dependencies:
+  - base == 4.*
+  - array
+  - binary
+  - bytestring
+  - placeholders
+
+ghc-options: -threaded
+
+library:
+  source-dirs:
+    - src
+  exposed-modules:
+    - Codec.Stone
+    - Codec.Stone.Header
+    - Codec.Stone.Header.AgnosticHeader
+    - Codec.Stone.Utils.Decode
+    - Codec.Stone.Payload.Kind
+    - Codec.Stone.Payload.Compression
+    - Codec.Stone.Payload.Header
+
+tests:
+  spec:
+    main: "Spec.hs"
+    source-dirs:
+      - test
+    dependencies:
+      - hspec == 2.*
+      - QuickCheck
+      - libstone
+    build-tools:
+      - hspec-discover

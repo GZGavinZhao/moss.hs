@@ -1,0 +1,58 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.35.2.
+--
+-- see: https://github.com/sol/hpack
+
+name:               libstone
+version:            0.1.0.0
+homepage:           https://github.com/GZGavinZhao/moss.hs
+license:            MPL-2.0
+license-file:       LICENSE
+maintainer:         Gavin Zhao <me@gzgz.dev>
+category:           Codec
+build-type:         Simple
+
+library
+    exposed-modules:
+        Codec.Stone
+        Codec.Stone.Header
+        Codec.Stone.Header.AgnosticHeader
+        Codec.Stone.Utils.Decode
+        Codec.Stone.Payload.Kind
+        Codec.Stone.Payload.Compression
+        Codec.Stone.Payload.Header
+    other-modules:
+        Paths_libstone
+    ghc-options: -threaded
+    build-depends:
+        array,
+        base ==4.*,
+        binary,
+        bytestring,
+        placeholders
+    hs-source-dirs:
+        src
+    default-language: GHC2021
+
+test-suite spec
+    type: exitcode-stdio-1.0
+    main-is: Spec.hs
+    other-modules:
+        Codec.Stone.HeaderSpec
+        Paths_libstone
+    hs-source-dirs:
+        test
+    ghc-options: -threaded
+    build-tool-depends:
+        hspec-discover:hspec-discover
+    build-depends:
+        QuickCheck,
+        array,
+        base ==4.*,
+        binary,
+        bytestring,
+        hspec ==2.*,
+        libstone,
+        placeholders
+    default-language: GHC2021
