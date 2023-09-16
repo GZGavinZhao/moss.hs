@@ -19,19 +19,15 @@ ghc-options: -threaded
 library:
   source-dirs:
     - src
-  exposed-modules:
-    - Codec.Stone
-    - Codec.Stone.Header
-    - Codec.Stone.Header.AgnosticHeader
-    - Codec.Stone.Payload
-    - Codec.Stone.Payload.Meta
-    - Codec.Stone.Payload.Kind
-    - Codec.Stone.Payload.Compression
-    - Codec.Stone.Payload.Header
+  other-modules:
+    - Codec.Stone.Utils.Decode
+    - Codec.Stone.Utils.DeriveEnum
   dependencies:
     - template-haskell
+    - text
   other-extensions:
     - TemplateHaskell
+    - OverloadedStrings
 
 tests:
   spec:

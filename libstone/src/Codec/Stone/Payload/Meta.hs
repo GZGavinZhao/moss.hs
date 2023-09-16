@@ -1,9 +1,14 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Codec.Stone.Payload.Meta where
 
 import Data.Binary
 import Data.Binary.Get
 import Data.Binary.Put
+import Data.ByteString qualified as BS
 import Data.Int
+import Data.Text qualified as T
+import Data.Text.Encoding qualified as T
 import Data.Word
 
 data Dependency = PackageName | SharedLibrary | PkgConfig | Interpreter | CMake | Python | Binary | SystemBinary | PkgConfig32
@@ -22,10 +27,27 @@ data Kind
   | Uint32 Word32
   | Int64 Int64
   | Uint64 Word64
-  | String String
-  | Dependency Dependency String
-  | Provider Dependency String
+  | String T.Text
+  | Dependency Dependency T.Text
+  | Provider Dependency T.Text
   deriving (Show, Eq)
+
+getKind :: Int -> Int -> Get Kind
+getKind 1 _ = Int8 . fromIntegral <$> getWord8
+getKind 2 _ = Uint8 . fromIntegral <$> getWord8
+getKind 3 _ = Int16 . fromIntegral <$> getWord16be
+getKind 4 _ = Uint16 . fromIntegral <$> getWord16be
+getKind 5 _ = Int32 . fromIntegral <$> getWord32be
+getKind 6 _ = Uint32 . fromIntegral <$> getWord32be
+getKind 7 _ = Int64 . fromIntegral <$> getWord64be
+getKind 8 _ = Uint64 . fromIntegral <$> getWord64be
+getKind 9 len = String . T.decodeUtf8 <$> getByteString len
+getKind 10 len = do
+  depKind <- get
+  Dependency depKind . T.decodeUtf8 <$> getByteString len
+getKind 11 len = do
+  depKind <- get
+  Provider depKind . T.decodeUtf8 <$> getByteString len
 
 data Tag
   = Name
@@ -97,4 +119,3 @@ instance Enum Tag where
 instance Binary Tag where
   put tag = putWord16be $ fromIntegral $ fromEnum tag
   get = toEnum . fromIntegral <$> getWord16be
-

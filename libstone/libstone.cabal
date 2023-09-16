@@ -19,14 +19,13 @@ library
         Codec.Stone.Header
         Codec.Stone.Header.AgnosticHeader
         Codec.Stone.Payload
-        Codec.Stone.Payload.Meta
-        Codec.Stone.Payload.Kind
         Codec.Stone.Payload.Compression
         Codec.Stone.Payload.Header
+        Codec.Stone.Payload.Kind
+        Codec.Stone.Payload.Meta
     other-modules:
         Codec.Stone.Utils.Decode
         Codec.Stone.Utils.DeriveEnum
-        Paths_libstone
     ghc-options: -threaded
     build-depends:
         array,
@@ -34,11 +33,13 @@ library
         binary,
         bytestring,
         placeholders,
-        template-haskell
+        template-haskell,
+        text
     hs-source-dirs:
         src
     other-extensions:
         TemplateHaskell
+        OverloadedStrings
     default-language: GHC2021
 
 test-suite spec

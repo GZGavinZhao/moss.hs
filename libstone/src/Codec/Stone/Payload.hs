@@ -16,13 +16,11 @@ data Record
 
 getRecord :: K.Kind -> Get Record
 getRecord K.Meta = do
-  len <- getWord32be
-  tag <- toEnum . fromIntegral <$> getWord16be
+  len <- fromIntegral <$> getWord32be
+  tag <- get
   kindIdx <- toEnum . fromIntegral <$> getWord8
   skip 1
-  kind <- case kindIdx of
-    1 -> M.Int8 . fromIntegral <$> getWord8
-    _ -> error "Wtf"
+  kind <- M.getKind kindIdx len
   return $ Meta tag kind
 
 data Payload = Payload
