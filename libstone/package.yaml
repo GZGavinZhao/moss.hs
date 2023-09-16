@@ -23,14 +23,19 @@ library:
     - Codec.Stone
     - Codec.Stone.Header
     - Codec.Stone.Header.AgnosticHeader
-    - Codec.Stone.Utils.Decode
+    - Codec.Stone.Payload
+    - Codec.Stone.Payload.Meta
     - Codec.Stone.Payload.Kind
     - Codec.Stone.Payload.Compression
     - Codec.Stone.Payload.Header
+  dependencies:
+    - template-haskell
+  other-extensions:
+    - TemplateHaskell
 
 tests:
   spec:
-    main: "Spec.hs"
+    main: Spec.hs
     source-dirs:
       - test
     dependencies:
