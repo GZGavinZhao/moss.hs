@@ -1,5 +1,3 @@
-{-# LANGUAGE RecordWildCards #-}
-
 module Codec.Stone.Payload.Header where
 
 import Codec.Stone.Payload.Compression

@@ -25,6 +25,9 @@ library:
   dependencies:
     - template-haskell
     - text
+    - wide-word
+  default-extensions:
+    - RecordWildCards
   other-extensions:
     - TemplateHaskell
     - OverloadedStrings

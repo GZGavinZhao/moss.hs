@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Codec.Stone.Payload.Meta where
 
 import Data.Binary
@@ -48,6 +46,7 @@ getKind 10 len = do
 getKind 11 len = do
   depKind <- get
   Provider depKind . T.decodeUtf8 <$> getByteString len
+getKind idx _ = error $ "getKind: unknown kind: " ++ show idx
 
 data Tag
   = Name
