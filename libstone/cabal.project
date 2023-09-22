@@ -1,0 +1,4 @@
+packages: ./libstone.cabal
+
+package zstd
+  flags: -standalone

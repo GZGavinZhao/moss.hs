@@ -42,10 +42,10 @@ getKind 8 _ = Uint64 . fromIntegral <$> getWord64be
 getKind 9 len = String . T.decodeUtf8 <$> getByteString len
 getKind 10 len = do
   depKind <- get
-  Dependency depKind . T.decodeUtf8 <$> getByteString len
+  Dependency depKind . T.decodeUtf8 <$> getByteString (len - 1)
 getKind 11 len = do
   depKind <- get
-  Provider depKind . T.decodeUtf8 <$> getByteString len
+  Provider depKind . T.decodeUtf8 <$> getByteString (len - 1)
 getKind idx _ = error $ "getKind: unknown kind: " ++ show idx
 
 data Tag

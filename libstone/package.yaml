@@ -13,6 +13,7 @@ dependencies:
   - binary
   - bytestring
   - placeholders
+  - pretty-simple
 
 ghc-options: -threaded
 
@@ -26,6 +27,7 @@ library:
     - template-haskell
     - text
     - wide-word
+    - zstd
   default-extensions:
     - RecordWildCards
   other-extensions:

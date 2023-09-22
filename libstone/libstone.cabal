@@ -37,9 +37,11 @@ library
         binary,
         bytestring,
         placeholders,
+        pretty-simple,
         template-haskell,
         text,
-        wide-word
+        wide-word,
+        zstd
     hs-source-dirs:
         src
     default-extensions:
@@ -54,6 +56,7 @@ test-suite spec
     main-is: Spec.hs
     other-modules:
         Codec.Stone.HeaderSpec
+        Codec.StoneSpec
         Paths_libstone
     hs-source-dirs:
         test
@@ -68,5 +71,6 @@ test-suite spec
         bytestring,
         hspec ==2.*,
         libstone,
-        placeholders
+        placeholders,
+        pretty-simple
     default-language: GHC2021
