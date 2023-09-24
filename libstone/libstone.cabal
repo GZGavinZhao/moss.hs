@@ -51,6 +51,25 @@ library
         OverloadedStrings
     default-language: GHC2021
 
+executable inspect
+    main-is: Inspect.hs
+    other-modules:
+        Paths_libstone
+    hs-source-dirs:
+        exe
+    ghc-options: -threaded
+    build-depends:
+        array,
+        base ==4.*,
+        binary,
+        bytestring,
+        libstone,
+        optparse-simple,
+        placeholders,
+        pretty-simple,
+        text
+    default-language: GHC2021
+
 test-suite spec
     type: exitcode-stdio-1.0
     main-is: Spec.hs
@@ -72,5 +91,6 @@ test-suite spec
         hspec ==2.*,
         libstone,
         placeholders,
-        pretty-simple
+        pretty-simple,
+        text
     default-language: GHC2021

@@ -1,7 +1,7 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module Codec.Stone.Payload where
+module Codec.Stone.Payload (Record (..), Payload (..)) where
 
 import Codec.Compression.Zstd.Lazy
 import Codec.Stone.Payload.Compression
@@ -44,7 +44,6 @@ getRecord Header {..} =
       kindIdx <- toEnum . fromIntegral <$> getWord8
       skip 1
       kind <- M.getKind kindIdx len
-      assert <$> isEmpty
       return $ Meta tag kind
     K.Attributes -> do
       keyLen <- fromIntegral <$> getWord64be
@@ -70,11 +69,9 @@ getRecord Header {..} =
         2 -> L.Symlink <$> (T.decodeUtf8 <$> getByteString sourceLen) <*> (T.decodeUtf8 <$> getByteString targetLen)
         3 -> L.Directory . T.decodeUtf8 <$> getByteString targetLen
 
-      assert <$> isEmpty
       return $ Layout uid gid mode tag entry
     K.Content -> do
       skip (fromIntegral plainSize)
-      assert <$> isEmpty
       return $ Content (fromIntegral plainSize) (-1) (fromIntegral storedSize) compression
 
 data Payload = Payload
@@ -97,7 +94,16 @@ instance Binary Payload where
   put _ = $notImplemented
   get = do
     header <- get
-    let cnt = if kind header == K.Content then 1 else fromIntegral $ numRecords header
+    let payloadKind = kind header
     rawRecords <- decompress <$> getLazyByteString (fromIntegral $ storedSize header)
-    let records = runGet (replicateM cnt (getRecord header)) rawRecords
-    return $ Payload header records
+    let decodedLen = fromIntegral $ plainSize header
+
+    case kind header of
+      K.Content ->
+        do
+          offset <- fromIntegral <$> bytesRead
+          let record = runGet (pure $ Content (fromIntegral $ plainSize header) offset (fromIntegral $ storedSize header) (compression header)) rawRecords
+          return $ Payload header [record]
+      _ -> do
+        let records = runGet (isolate decodedLen $ getRecords header) rawRecords
+        return $ Payload header records

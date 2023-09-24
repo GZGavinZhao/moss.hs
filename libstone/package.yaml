@@ -14,8 +14,18 @@ dependencies:
   - bytestring
   - placeholders
   - pretty-simple
+  - text
 
 ghc-options: -threaded
+
+executables:
+  inspect:
+    main: Inspect.hs
+    source-dirs:
+      - exe
+    dependencies:
+      - libstone
+      - optparse-simple
 
 library:
   source-dirs:

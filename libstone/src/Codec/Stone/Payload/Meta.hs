@@ -16,6 +16,17 @@ instance Binary Dependency where
   put dependency = putWord8 $ fromIntegral $ fromEnum dependency
   get = toEnum . fromIntegral <$> getWord8
 
+showDependency :: Dependency -> String -> String
+showDependency PackageName name = name
+showDependency SharedLibrary name = name
+showDependency PkgConfig name = "pkgconfig(" ++ name ++ ")"
+showDependency Interpreter name = "interpreter(" ++ name ++ ")"
+showDependency CMake name = "cmake(" ++ name ++ ")"
+showDependency Python name = "python(" ++ name ++ ")"
+showDependency Binary name = "binary(" ++ name ++ ")"
+showDependency SystemBinary name = "system_binary(" ++ name ++ ")"
+showDependency PkgConfig32 name = "pkgconfig32(" ++ name ++ ")"
+
 data Kind
   = Int8 Int8
   | Uint8 Word8
@@ -28,7 +39,20 @@ data Kind
   | String T.Text
   | Dependency Dependency T.Text
   | Provider Dependency T.Text
-  deriving (Show, Eq)
+  deriving (Eq)
+
+instance Show Kind where
+  show (Int8 val) = show val
+  show (Uint8 val) = show val
+  show (Int16 val) = show val
+  show (Uint16 val) = show val
+  show (Int32 val) = show val
+  show (Uint32 val) = show val
+  show (Int64 val) = show val
+  show (Uint64 val) = show val
+  show (String text) = T.unpack text
+  show (Dependency depType text) = showDependency depType (T.unpack text)
+  show (Provider pdType text) = showDependency pdType (T.unpack text)
 
 getKind :: Int -> Int -> Get Kind
 getKind 1 _ = Int8 . fromIntegral <$> getWord8
