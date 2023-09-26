@@ -7,6 +7,8 @@ import Data.Binary.Get
 import Data.Binary.Put
 import Data.ByteString qualified as BS
 import Development.Placeholders
+import Control.DeepSeq (NFData)
+import GHC.Generics (Generic)
 
 data FileType
   = Unknown
@@ -14,7 +16,7 @@ data FileType
   | Delta
   | Repository
   | BuildManifest
-  deriving (Show, Eq, Enum)
+  deriving (Show, Eq, Enum, Generic, NFData)
 
 instance Binary FileType where
   put = $notImplemented

@@ -8,17 +8,19 @@ import Data.Binary.Get
 import Data.Binary.Put
 import Data.ByteString qualified as BS
 import Data.Word
+import GHC.Generics (Generic)
+import Control.DeepSeq (NFData)
 
 data Header = Header
-  { storedSize :: Word64,
-    plainSize :: Word64,
-    checksum :: BS.ByteString,
-    numRecords :: Word,
-    version :: Word16,
-    kind :: Kind,
-    compression :: Compression
+  { storedSize :: !Word64,
+    plainSize :: !Word64,
+    checksum :: !BS.ByteString,
+    numRecords :: !Word,
+    version :: !Word16,
+    kind :: !Kind,
+    compression :: !Compression
   }
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic, NFData)
 
 instance Binary Header where
   get = do

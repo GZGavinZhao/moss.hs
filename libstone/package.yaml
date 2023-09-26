@@ -15,6 +15,7 @@ dependencies:
   - placeholders
   - pretty-simple
   - text
+  - deepseq
 
 ghc-options: -threaded
 
@@ -26,6 +27,15 @@ executables:
     dependencies:
       - libstone
       - optparse-simple
+
+benchmarks:
+  stone:
+    source-dirs:
+      - bench
+    main: Stone.hs
+    dependencies:
+      - libstone
+      - criterion
 
 library:
   source-dirs:
@@ -40,6 +50,8 @@ library:
     - zstd
   default-extensions:
     - RecordWildCards
+    - DeriveAnyClass
+    - OverloadedStrings
   other-extensions:
     - TemplateHaskell
     - OverloadedStrings

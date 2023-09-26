@@ -23,15 +23,17 @@ import Data.WideWord.Word128
 import Debug.Pretty.Simple
 import Development.Placeholders
 import GHC.Int (Int64)
+import GHC.Generics (Generic)
+import Control.DeepSeq (NFData)
 
 data Record
-  = Attribute BS.ByteString BS.ByteString
-  | Index Int Int Word128
-  | Meta M.Tag M.Kind
-  | Layout Int Int Int Int L.Entry
-  | Content Int Int Int Compression
+  = Attribute !BS.ByteString !BS.ByteString
+  | Index !Int !Int !Word128
+  | Meta !M.Tag !M.Kind
+  | Layout !Int !Int !Int !Int !L.Entry
+  | Content !Int !Int !Int !Compression
   | Dumb
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic, NFData)
 
 getRecord :: Header -> Get Record
 -- Meta
@@ -78,7 +80,7 @@ data Payload = Payload
   { header :: !Header,
     records :: ![Record]
   }
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic, NFData)
 
 getRecords :: Header -> Get [Record]
 getRecords header = do

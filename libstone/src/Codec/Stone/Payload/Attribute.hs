@@ -4,12 +4,14 @@ import Data.Binary
 import Data.Binary.Get
 import Data.Binary.Put
 import Data.ByteString qualified as BS
+import GHC.Generics (Generic)
+import Control.DeepSeq (NFData)
 
 data Attribute = Attribute
-  { key :: BS.ByteString,
-    value :: BS.ByteString
+  { key :: !BS.ByteString,
+    value :: !BS.ByteString
   }
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic, NFData)
 
 instance Binary Attribute where
   put Attribute {..} = do

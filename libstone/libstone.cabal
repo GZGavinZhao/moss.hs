@@ -23,7 +23,6 @@ library
         Codec.Stone.Payload.Attribute
         Codec.Stone.Payload.Compression
         Codec.Stone.Payload.Header
-        Codec.Stone.Payload.Index
         Codec.Stone.Payload.Kind
         Codec.Stone.Payload.Layout
         Codec.Stone.Payload.Meta
@@ -36,6 +35,7 @@ library
         base ==4.*,
         binary,
         bytestring,
+        deepseq,
         placeholders,
         pretty-simple,
         template-haskell,
@@ -46,6 +46,8 @@ library
         src
     default-extensions:
         RecordWildCards
+        DeriveAnyClass
+        OverloadedStrings
     other-extensions:
         TemplateHaskell
         OverloadedStrings
@@ -63,6 +65,7 @@ executable inspect
         base ==4.*,
         binary,
         bytestring,
+        deepseq,
         libstone,
         optparse-simple,
         placeholders,
@@ -88,7 +91,29 @@ test-suite spec
         base ==4.*,
         binary,
         bytestring,
+        deepseq,
         hspec ==2.*,
+        libstone,
+        placeholders,
+        pretty-simple,
+        text
+    default-language: GHC2021
+
+benchmark stone
+    type: exitcode-stdio-1.0
+    main-is: Stone.hs
+    other-modules:
+        Paths_libstone
+    hs-source-dirs:
+        bench
+    ghc-options: -threaded
+    build-depends:
+        array,
+        base ==4.*,
+        binary,
+        bytestring,
+        criterion,
+        deepseq,
         libstone,
         placeholders,
         pretty-simple,

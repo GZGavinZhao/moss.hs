@@ -12,13 +12,15 @@ import Data.Binary.Get
 import Data.ByteString qualified as BS
 import Data.ByteString.Lazy qualified as LBS
 import Development.Placeholders
+import GHC.Generics (Generic)
+import Control.DeepSeq (NFData)
 
 stoneMagic :: BS.ByteString
 stoneMagic = "\0mos"
 
 {-# HLINT ignore "Use newtype instead of data" #-}
 data Header = V1 AgnosticHeader Int FileType
-  deriving (Show, Eq)
+  deriving (Show, Eq, Generic, NFData)
 
 getV1 :: Get (Int, FileType) = do
   payloadCnt <- fromIntegral <$> getWord16be
